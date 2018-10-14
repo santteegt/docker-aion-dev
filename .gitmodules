@@ -1,0 +1,3 @@
+[submodule "aion"]
+	path = aion
+	url = https://github.com/aionnetwork/aion.git
