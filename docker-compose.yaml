@@ -1,0 +1,8 @@
+version: '3.1'
+
+services:
+    aion-dev:
+        build:
+            context: .
+        volumes:
+            - ./aion:/aion
