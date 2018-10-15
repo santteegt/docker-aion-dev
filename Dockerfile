@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y software-properties-common
 RUN add-apt-repository ppa:linuxuprising/java && apt-get update
 RUN echo oracle-java10-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 RUN apt-get install -y oracle-java10-set-default
-RUN apt-get install -y git g++ cmake wget llvm-4.0 lsb-release libjsoncpp1 libjsoncpp-dev libboost1.58-all-dev libzmq5 libstdc++6 libgcc1 libpgm-5.2-0
+RUN apt-get install -y nano git g++ cmake wget llvm-4.0 lsb-release libjsoncpp1 libjsoncpp-dev libboost1.58-all-dev libzmq5 libstdc++6 libgcc1 libpgm-5.2-0
 RUN apt-get install -y bzip2 lsb-release wget curl jq locales net-tools libicu-dev libedit-dev libicu55 libedit2 libffi6 libtinfo5
 
 RUN apt-get clean
@@ -17,7 +17,11 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# WORKDIR /opt
+WORKDIR /root
+
+RUN echo "export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8" >> .profile
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-10-oracle" >> .profile
+RUN /bin/bash -c "source ~/.profile"
 
 # TODO: use java 10.0.2
 # ARG DEV_BUILD=true
