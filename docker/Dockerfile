@@ -1,14 +1,10 @@
 ARG UBUNTU_VER=16.04
 FROM ubuntu:${UBUNTU_VER}
 
-# prepare for java instalation
-RUN apt-get update && apt-get install -y software-properties-common
-RUN add-apt-repository ppa:linuxuprising/java && apt-get update
-RUN echo oracle-java10-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN apt-get install -y oracle-java10-set-default
-RUN apt-get install -y nano git g++ cmake wget llvm-4.0 lsb-release libjsoncpp1 libjsoncpp-dev libboost1.58-all-dev libzmq5 libstdc++6 libgcc1 libpgm-5.2-0
-RUN apt-get install -y bzip2 lsb-release wget curl jq locales net-tools libicu-dev libedit-dev libicu55 libedit2 libffi6 libtinfo5
+LABEL maintainers="mihai.cojan@centrys.io, alexandru.laurus@centrys.io"
 
+# prepare for java instalation
+RUN apt-get update && apt-get install -y bzip2 lsb-release wget curl jq locales net-tools libicu-dev libedit-dev libicu55 libedit2 libffi6 libtinfo5
 RUN apt-get clean
 
 # change locales to UTF-8 in order to avoid bug when changing config.xml
@@ -17,14 +13,10 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-WORKDIR /root
-
-RUN echo "export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8" >> .profile
-RUN echo "export JAVA_HOME=/usr/lib/jvm/java-10-oracle" >> .profile
-RUN /bin/bash -c "source ~/.profile"
+WORKDIR /opt
 
 # TODO: use java 10.0.2
-# ARG DEV_BUILD=true
+# ARG DEV_BUILD=false
 # RUN if [ "${DEV_BUILD}" = "true" ]; then wget -O jdk.tar.gz \
 # https://download.java.net/java/GA/jdk10/10.0.1/fb4372174a714e6b8c52526dc134031e/10/openjdk-10.0.1_linux-x64_bin.tar.gz; fi
 # RUN if [ "${DEV_BUILD}" = "true" ]; then tar -xf jdk.tar.gz; fi
@@ -49,5 +41,7 @@ RUN /bin/bash -c "source ~/.profile"
 # COPY ./create-coinbase.sh .
 # COPY ./aion-docker.sh .
 
-ENTRYPOINT ["top"]
-CMD ["-b"]
+# RUN ./create-coinbase.sh
+
+CMD [ "/bin/bash", "-c", "sh", "/opt/aion/aion-docker.sh" ]
+# CMD ["/bin/bash", "-c", "top", "b"]

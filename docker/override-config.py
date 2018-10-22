@@ -4,10 +4,14 @@ import xml.etree.ElementTree
 import subprocess
 from xml.dom import minidom
 
-copyfile('./config/mainnet/config.xml', './config/config.xml')
-copyfile('./config/mainnet/genesis.json', './config/genesis.json')
+# copyfile('./config/mainnet/config.xml', './config/config.xml')
+# copyfile('./config/mainnet/genesis.json', './config/genesis.json')
+network = os.environ.get('network')
+netwok = network if network != None else 'mastery'
 
-config_file = 'config/config.xml'
+print("Network to use: {}".format(network))
+
+config_file = '{}/config/config.xml'.format(network)
 indentation = '\t'
 
 def override_attrib(element, attrib,  name, value):
@@ -67,12 +71,14 @@ root = et.getroot()
 
 api = root.find('api')
 new_rpc = api.find('rpc')
+override_attrib(new_rpc, 'active', 'rpc_active', os.environ.get('rpc_active'))
 override_attrib(new_rpc, 'ip', 'rpc_listen_address', os.environ.get('rpc_listen_address'))
 override_attrib(new_rpc, 'port', 'rpc_listen_port', os.environ.get('rpc_listen_port'))
 override_child_text(new_rpc, 'cors-enabled', 'cors_enabled', os.environ.get('cors_enabled'))
 override_child_text(new_rpc, 'apis-enabled', 'apis_enabled', os.environ.get('apis_enabled'))
 
 new_java = api.find('java')
+override_attrib(new_java, 'active', 'java_active', os.environ.get('java_active'))
 override_attrib(new_java, 'ip', 'java_api_listen_address', os.environ.get('java_api_listen_address'))
 override_attrib(new_java, 'port', 'java_api_listen_port', os.environ.get('java_api_listen_port'))
 

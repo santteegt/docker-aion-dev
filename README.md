@@ -8,10 +8,10 @@ Currently AION Network build/development is only supported on Ubuntu 16.04 LTS. 
 
 ```bash
 $ cd docker-aion-dev
-$ git pull --recursive https://github.com/aionnetwork/aion
+$ git clone https://github.com/aionnetwork/aion
 $ cd aion
 $ git checkout master-pre-merge
-git submodule update --init
+$ git submodule update --init
 ```
 
 * Start docker container for compilation: (**TODO**: include environment variabled setup):
@@ -34,19 +34,16 @@ $ cd /aion
 $ ./gradlew build pack -x test -Dcompile.debug=true
 ```
 
-* Now locally, copy the files `override-config.py` and `supporting-services.yml` to the `aion` folder:
+* Now locally, run the development environment setup script:
 
 ```bash
-$ cp override-config.py aion/override-config.py
-$ cp supporting-services.yml aion/supporting-services.yml
+$ sh setup-dev.sh
 ```
 
-If you want to override/change value of other config variables, modify this files accordingly.
-
-* Start AION Network node using docker-compose:
+* Finally, Start the AION Network node using docker-compose:
 
 ```bash
-$ cd aion
+$ cd docker
 $ docker-compose -f supporting-services.yml up
 ```
 

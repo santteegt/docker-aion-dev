@@ -1,0 +1,41 @@
+version: '3.1'
+
+services:
+    aion-core:
+        container_name: aion-core
+        build:
+            context: .
+            args:
+                - DEV_BUILD=true
+        ports:
+            - "8545:8545"
+            - "8547:8547"
+            - "6006:6006"
+        environment:
+            - network=mastery
+            - rpc_active=true
+            - java_active=true
+            # - difficulty=0x1
+            # creates a new account and assigns it's address to miner_address env var
+            - coinbase_password=p@ss
+            - rpc_listen_address=0.0.0.0
+            - java_api_listen_address=0.0.0.0
+            - mining=true
+            - override_peer_list=false
+            - peer_list=
+            - log_level_p2p=DEBUG
+            - log_level_sync=DEBUG
+            - sync_show_status=true
+            # run ant pack_dev_docker and uncomment the line below to remote debug
+            - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:6006 -Xms4g
+        volumes:
+            - ./aion:/opt/aion
+            - ./aion-docker.sh:/opt/aion/aion-docker.sh
+            - ./create-coinbase.sh:/opt/aion/create-coinbase.sh
+            - ./override-config.py:/opt/aion/override-config.py
+            # - ../config.xml:/opt/aion/config/config.xml
+            # - ../override-config.py:/opt/aion/override-config.py
+            # - ../keystore:/opt/aion/mainnet/keystore
+        entrypoint: /bin/bash
+        # command: /opt/aion/aion-docker.sh coinbase
+        command: /opt/aion/aion-docker.sh
