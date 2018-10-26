@@ -17,7 +17,7 @@ services:
             - java_active=true
             # - difficulty=0x1
             # creates a new account and assigns it's address to miner_address env var
-            - coinbase_password=p@ss
+            # - coinbase_password=p@ss # ENABLE IT TO SETUP A NEW ACCOUNT
             - rpc_listen_address=0.0.0.0
             - java_api_listen_address=0.0.0.0
             - mining=true
@@ -37,5 +37,5 @@ services:
             # - ../override-config.py:/opt/aion/override-config.py
             # - ../keystore:/opt/aion/mainnet/keystore
         entrypoint: /bin/bash
-        # command: /opt/aion/aion-docker.sh coinbase
+        # command: /opt/aion/aion-docker.sh coinbase # ENABLE IT TO SETUP A NEW ACCOUNT
         command: /opt/aion/aion-docker.sh

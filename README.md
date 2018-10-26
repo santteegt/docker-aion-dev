@@ -42,6 +42,8 @@ $ sh setup-dev.sh
 
 * Finally, Start the AION Network node using docker-compose:
 
+**NOTE**: in case it is the first time you run the node, enable config lines 20 & 40 (disable 41) on the `docker/supporting-services.yml`. Then, to following deployments, rollback to default configuration.
+
 ```bash
 $ cd docker
 $ docker-compose -f supporting-services.yml up
